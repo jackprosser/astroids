@@ -2,12 +2,12 @@
 
 A simple version of astroids. Uses [Nuxt 3](https://nuxt.com/docs/getting-started/introduction).
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/ca9a2225-6566-418b-9bcb-a44b3e3dcfd2/deploy-status)](https://app.netlify.com/sites/thingsthat/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/efd8ca04-b676-45f5-b055-61bae9170cac/deploy-status)](https://app.netlify.com/sites/simple-astroids/deploys)
 
 ### Getting Started
 ```
-git clone https://github.com/thingsthat/thingsthat
-cd thingsthat
+git clone https://github.com/jackprosser/astroids
+cd astroids
 yarn
 ```
 
