@@ -43,10 +43,12 @@ const gameState = reactive<{
     [key: string]: boolean
   }
   lastAIShootTime: number // Timestamp of the last shot made by the AI.
+  level: number // The current level of the game.
   player: GameObject // GameObject representing the player's ship, including position and angle.
   score: number // The current score of the player.
   timePlaying: number // The amount of time elapsed since the start of the game.
   timeStart: number // The timestamp when the game was started or reset.
+
   userHasInteracted: boolean //  A flag indicating whether the player has interacted with the game.
 }>({
   aiShootCooldown: 200,
@@ -59,6 +61,7 @@ const gameState = reactive<{
     Space: false,
   },
   lastAIShootTime: 0,
+  level: 1,
   player: {
     angle: 0,
     speed: 0,
@@ -68,6 +71,7 @@ const gameState = reactive<{
   score: 0,
   timePlaying: 0,
   timeStart: 0,
+
   userHasInteracted: false,
 })
 
@@ -124,20 +128,18 @@ function resetGame() {
   gameState.lastAIShootTime = 0
   gameState.aiShootCooldown = 200
   gameState.userHasInteracted = false
-  createInitialAsteroids(5)
+  createInitialAsteroids()
 }
 
 /**
  * Creates a specified number of asteroids at random positions on the canvas.
  * This function is used to populate the game with initial obstacles when the
  * game starts or after a reset.
- *
- * @param {number} count - The number of asteroids to create.
  */
-function createInitialAsteroids(count: number) {
+function createInitialAsteroids() {
   if (!gameCanvas.value) return
 
-  for (let index = 0; index < count; index++) {
+  for (let index = 0; index < gameState.level; index++) {
     let x, y
     do {
       x = Math.random() * gameCanvas.value.width
@@ -305,7 +307,8 @@ function update() {
 
   // Increase difficulty if all asteroids are destroyed
   if (gameState.asteroids.length === 0) {
-    createInitialAsteroids(gameState.asteroids.length + 1)
+    gameState.level = gameState.level + 1
+    createInitialAsteroids()
   }
 }
 /**
