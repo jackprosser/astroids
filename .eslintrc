@@ -1,42 +1,40 @@
 {
   "env": {
     "node": true,
-    "es6": true
+    "es6": true,
+    "mocha": true
+  },
+  "plugins": [
+    "vue",
+    "vuejs-accessibility",
+    "jsdoc",
+    "i18next",
+    "@typescript-eslint",
+    "sonarjs",
+    "import",
+    "prettier-vue",
+    "unicorn"
+  ],
+  "root": true,
+  "parserOptions": {
+    "extends": "standard",
+    "parser": "@babel/eslint-parser"
   },
   "extends": [
     "eslint:recommended",
+    "plugin:prettier-vue/recommended",
+    "plugin:vue/vue3-strongly-recommended",
+    "plugin:i18next/recommended",
     "plugin:security/recommended",
     "plugin:sonarjs/recommended",
-    "plugin:vue/vue3-recommended",
-    "@nuxtjs/eslint-config-typescript",
-    "plugin:prettier-vue/recommended"
+    "plugin:import/recommended",
+    "plugin:perfectionist/recommended-natural"
   ],
   "globals": {
+    "navigator": true,
     "window": true,
-    "localStorage": true
+    "document": true
   },
-  "parser": "vue-eslint-parser",
-  "parserOptions": {
-    "requireConfigFile": false,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "project": true,
-    "parser": {
-      "ts": "@typescript-eslint/parser",
-      "js": "@babel/eslint-parser",
-      "vue": "vue-eslint-parser"
-    },
-    "ecmaVersion": "latest",
-    "extraFileExtensions": [
-      ".vue"
-    ]
-  },
-  "plugins": [
-    "sonarjs",
-    "@typescript-eslint"
-  ],
   "settings": {
     "prettier-vue": {
       "SFCBlocks": {
@@ -46,65 +44,470 @@
     }
   },
   "rules": {
-    "require-await": "off",
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "linebreak-style": ["error", "unix"],
     "prefer-const": [
       "warn",
       {
         "destructuring": "all"
       }
     ],
-    "semi": [
-      "error",
-      "never"
-    ],
-    "no-prototype-builtins": 0,
-    "no-unused-vars": "off",
+    "semi": ["error", "never"],
+    "no-prototype-builtins": "off",
     "no-trailing-spaces": "error",
     "no-redeclare": "off",
     "no-shadow": "warn",
+    "no-useless-escape": "warn",
+
+    // We leave this as warn, as TypeScript can have issues with this
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "next|context|req|key|i|event"
+      }
+    ],
+
+    // Formatting
+    "object-curly-spacing": ["error", "always"],
+    "computed-property-spacing": "off",
+
+    // JS Docs
+    "jsdoc/check-alignment": "error",
+    "jsdoc/check-indentation": "error",
+    "jsdoc/check-param-names": "error",
+    "jsdoc/check-syntax": "error",
+    "jsdoc/check-tag-names": "error",
+    "jsdoc/check-types": "error",
+    "jsdoc/implements-on-classes": "error",
+    "jsdoc/match-description": "error",
+    "jsdoc/no-types": "off",
+    "jsdoc/no-undefined-types": "error",
+    "jsdoc/require-description": "error",
+    "jsdoc/require-description-complete-sentence": "error",
+    "jsdoc/require-example": "off",
+    "jsdoc/require-hyphen-before-param-description": "error",
+    "jsdoc/require-param": "error",
+    "jsdoc/require-param-description": "error",
+    "jsdoc/require-param-name": "error",
+    "jsdoc/require-param-type": "error",
+    "jsdoc/require-returns": "off",
+    "jsdoc/require-returns-check": "error",
+    "jsdoc/require-returns-description": "error",
+    "jsdoc/require-returns-type": "error",
+    "jsdoc/valid-types": "error",
+    "jsdoc/require-jsdoc": "off",
+
+    // i18n support
+    "i18next/no-literal-string": [
+      1,
+      {
+        "ignoreAttribute": ["class"],
+        "ignore": ["active"]
+      }
+    ],
+
+    // Security
     "security/detect-object-injection": "off",
+
+    // Sonar JS
+    "sonarjs/no-collapsible-if": "warn",
     "sonarjs/no-identical-functions": "warn",
-    "sonarjs/cognitive-complexity": "warn",
+    "sonarjs/cognitive-complexity": "off",
     "sonarjs/no-nested-template-literals": "warn",
     "sonarjs/no-duplicate-string": "warn",
     "sonarjs/no-redundant-boolean": "warn",
-    "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/camelcase": "off",
-    "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/ban-types": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/type-annotation-spacing": "error",
-    "@typescript-eslint/no-redeclare": [
-      0,
+    "sonarjs/no-duplicated-branches": "warn",
+    "sonarjs/no-unused-collection": "warn",
+    "sonarjs/prefer-object-literal": "warn",
+    "sonarjs/prefer-single-boolean-return": "warn",
+    "sonarjs/no-redundant-jump": "warn",
+   
+    // Imports
+    "import/named": "off",
+    "import/no-self-import": "off",
+    "import/no-unresolved": "off",
+    "import/no-duplicates": "error",
+    "import/order": [
+      "error",
       {
-        "ignoreDeclarationMerge": true
+        "groups": [["builtin", "external"], "internal", "parent", "sibling", "index"],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc" }
       }
     ],
-    "vue/multi-word-component-names": "off",
-    "require-jsdoc": [
-      "warn",
+
+    // Unicorn 
+    "unicorn/better-regex": "off",
+		"unicorn/catch-error-name": "error",
+		"unicorn/consistent-destructuring": "error",
+		"unicorn/consistent-function-scoping": "error",
+		"unicorn/custom-error-definition": "off",
+		"unicorn/empty-brace-spaces": "error",
+		"unicorn/error-message": "error",
+		"unicorn/escape-case": "error",
+		"unicorn/expiring-todo-comments": "error",
+		"unicorn/explicit-length-check": "error",
+		"unicorn/filename-case": [
+      "error",
       {
-        "require": {
-          "FunctionDeclaration": false,
-          "MethodDefinition": false,
-          "ClassDeclaration": true,
-          "ArrowFunctionExpression": false,
-          "FunctionExpression": false
+        "cases": {
+          "camelCase": true,
+          "pascalCase": true
+        },
+        "ignore": [
+          "shims-vue.d.ts"
+        ]
+      }
+    ],
+		"unicorn/import-style": "error",
+		"unicorn/new-for-builtins": "error",
+		"unicorn/no-abusive-eslint-disable": "error",
+		"unicorn/no-array-callback-reference": "off",
+		"unicorn/no-array-for-each": "error",
+		"unicorn/no-array-method-this-argument": "error",
+		"unicorn/no-array-push-push": "error",
+		"unicorn/no-array-reduce": "off",
+		"unicorn/no-await-expression-member": "error",
+		"unicorn/no-console-spaces": "error",
+		"unicorn/no-document-cookie": "error",
+		"unicorn/no-empty-file": "error",
+		"unicorn/no-for-loop": "error",
+		"unicorn/no-hex-escape": "error",
+		"unicorn/no-instanceof-array": "error",
+		"unicorn/no-invalid-remove-event-listener": "error",
+		"unicorn/no-keyword-prefix": "off",
+		"unicorn/no-lonely-if": "error",
+    "no-negated-condition": "off",
+    "unicorn/no-negated-condition": "error",
+    "no-nested-ternary": "off",
+    "unicorn/no-nested-ternary": "error",
+    "unicorn/no-new-array": "error",
+    "unicorn/no-new-buffer": "error",
+    "unicorn/no-null": "off",
+    "unicorn/no-object-as-default-parameter": "error",
+    "unicorn/no-process-exit": "off",
+    "unicorn/no-static-only-class": "error",
+    "unicorn/no-thenable": "error",
+    "unicorn/no-this-assignment": "error",
+    "unicorn/no-typeof-undefined": "error",
+    "unicorn/no-unnecessary-await": "error",
+    "unicorn/no-unreadable-array-destructuring": "error",
+    "unicorn/no-unreadable-iife": "error",
+    "unicorn/no-unused-properties": "off",
+    "unicorn/no-useless-fallback-in-spread": "error",
+    "unicorn/no-useless-length-check": "error",
+    "unicorn/no-useless-promise-resolve-reject": "error",
+    "unicorn/no-useless-spread": "off",
+    "unicorn/no-useless-switch-case": "off",
+    "unicorn/no-useless-undefined": "error",
+		"unicorn/no-zero-fractions": "off",
+    "unicorn/number-literal-case": "off",
+    "unicorn/numeric-separators-style": "off",
+    "unicorn/prefer-add-event-listener": "off",
+    "unicorn/prefer-array-find": "error",
+    "unicorn/prefer-array-flat": "error",
+    "unicorn/prefer-array-flat-map": "error",
+    "unicorn/prefer-array-index-of": "error",
+    "unicorn/prefer-array-some": "error",
+    "unicorn/prefer-at": "off",
+    "unicorn/prefer-blob-reading-methods": "error",
+    "unicorn/prefer-code-point": "off",
+    "unicorn/prefer-date-now": "error",
+    "unicorn/prefer-default-parameters": "error",
+    "unicorn/prefer-dom-node-append": "error",
+    "unicorn/prefer-dom-node-dataset": "off",
+    "unicorn/prefer-dom-node-remove": "off",
+    "unicorn/prefer-dom-node-text-content": "error",
+    "unicorn/prefer-event-target": "error",
+    "unicorn/prefer-export-from": "error",
+    "unicorn/prefer-includes": "error",
+    "unicorn/prefer-json-parse-buffer": "off",
+    "unicorn/prefer-keyboard-event-key": "error",
+    "unicorn/prefer-logical-operator-over-ternary": "off",
+    "unicorn/prefer-math-trunc": "error",
+    "unicorn/prefer-modern-dom-apis": "error",
+    "unicorn/prefer-modern-math-apis": "error",
+    "unicorn/prefer-module": "off",
+    "unicorn/prefer-native-coercion-functions": "error",
+    "unicorn/prefer-negative-index": "error",
+    "unicorn/prefer-node-protocol": "error",
+    "unicorn/prefer-number-properties": "error",
+    "unicorn/prefer-object-from-entries": "error",
+    "unicorn/prefer-optional-catch-binding": "error",
+    "unicorn/prefer-prototype-methods": "error",
+    "unicorn/prefer-query-selector": "error",
+    "unicorn/prefer-reflect-apply": "error",
+    "unicorn/prefer-regexp-test": "off",
+    "unicorn/prefer-set-has": "error",
+    "unicorn/prefer-set-size": "error",
+    "unicorn/prefer-spread": "off",
+    "unicorn/prefer-string-replace-all": "off",
+    "unicorn/prefer-string-slice": "off",
+    "unicorn/prefer-string-starts-ends-with": "error",
+    "unicorn/prefer-string-trim-start-end": "error",
+    "unicorn/prefer-switch": "error",
+    "unicorn/prefer-ternary": "off",
+    "unicorn/prefer-top-level-await": "off",
+    "unicorn/prefer-type-error": "error",
+    "unicorn/prevent-abbreviations": [
+      "error",
+      {
+        "allowList": {
+          "req": true,
+          "res": true,
+          "Param": true,
+          "args": true,
+          "env": true,
+          "Env": true,
+          "el": true,
+          "def": true,
+          "pkg": true,
+          "props": true,
+          "src": true
+        }
+      }
+    ],
+    "unicorn/relative-url-style": "error",
+    "unicorn/require-array-join-separator": "off",
+    "unicorn/require-number-to-fixed-digits-argument": "error",
+    "unicorn/require-post-message-target-origin": "off",
+    "unicorn/string-content": "off",
+    "unicorn/switch-case-braces": "error",
+    "unicorn/template-indent": "error",
+    "unicorn/text-encoding-identifier-case": "off",
+    "unicorn/throw-new-error": "error",
+
+    // Perfectionist sorting
+    "perfectionist/sort-imports": "off",
+    "perfectionist/sort-interfaces": [
+      "error",
+      {
+        "type": "natural",
+        "order": "asc",
+        "groups": ["type", "id", "name", "description", "where"],
+        "custom-groups": {
+          "type": "type",
+          "id": "id",
+          "name": "name",
+          "description": "description",
+          "where": "where"
+        }
+      }
+    ],
+    "perfectionist/sort-object-types": [
+      "error",
+      {
+        "type": "natural",
+        "order": "asc",
+        "groups": ["type", "id", "name", "description", "where"],
+        "custom-groups": {
+          "type": "type",
+          "id": "id",
+          "name": "name",
+          "description": "description",
+          "where": "where"
+        }
+      }
+    ],
+    "perfectionist/sort-objects": [
+      "error",
+      {
+        "type": "natural",
+        "order": "asc",
+        "groups": ["type", "id", "name", "description", "where"],
+        "custom-groups": {
+          "type": "type",
+          "id": "id",
+          "name": "name",
+          "description": "description",
+          "where": "where"
         }
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": "**/*.vue",
+      "parser": "vue-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "sourceType": "module"
+      },
+      "extends": [
+        "plugin:vue/vue3-strongly-recommended"
+      ],
+      "rules": {
+        "no-undef": "off",
+
+        /**
+        TODO: Vue 3. Once vidashery is also vue 3
+        "vue/component-api-style": ["error",
+          ["script-setup", "composition"]
+        ],
+        */
+        "vue/no-v-html": "off",
+        "vue/html-self-closing": "off",
+
+        "vue/singleline-html-element-content-newline": "off",
+        "vue/multiline-html-element-content-newline": "off",
+
+        "vue/no-bare-strings-in-template": "warn",
+        "vue/no-deprecated-destroyed-lifecycle": "off",
+        "vue/no-deprecated-v-on-native-modifier": "off",
+        "vue/no-deprecated-filter": "off",
+        "vue/no-deprecated-dollar-scopedslots-api": "off",
+        "vue/no-template-shadow": "error",
+        "vue/mustache-interpolation-spacing": ["error", "always"],
+
+        "vue/max-attributes-per-line": ["error", {
+          "singleline": {
+            "max": 2
+          },      
+          "multiline": {
+            "max": 1
+          }
+        }],
+
+        "vue/html-closing-bracket-newline": [
+          "error",
+          {
+            "singleline": "never",
+            "multiline": "never"
+          }
+        ],
+        "vue/html-indent": [
+          "error",
+          2,
+          {
+            "attribute": 1,
+            "baseIndent": 1,
+            "closeBracket": 0,
+            "alignAttributesVertically": true,
+            "ignores": []
+          }
+        ],
+       
+        "vuejs-accessibility/accessible-emoji": "off",
+        "vuejs-accessibility/alt-text": "error",
+        "vuejs-accessibility/anchor-has-content": "error",
+        "vuejs-accessibility/aria-props": "error",
+        "vuejs-accessibility/aria-role": "error",
+        "vuejs-accessibility/aria-unsupported-elements": "error",
+        "vuejs-accessibility/form-control-has-label": "off",
+        "vuejs-accessibility/heading-has-content": "error",
+        "vuejs-accessibility/iframe-has-title": "error",
+        "vuejs-accessibility/interactive-supports-focus": "error",
+        "vuejs-accessibility/label-has-for": [
+          "error",
+          {
+            "components": ["VLabel"],
+            "controlComponents": ["VInput"],
+            "required": {
+              "every": ["id"]
+            },
+            "allowChildren": false
+          }
+        ],
+        "vuejs-accessibility/media-has-caption": "off",
+        "vuejs-accessibility/no-access-key": "error",
+        "vuejs-accessibility/no-autofocus": "error",
+        "vuejs-accessibility/no-distracting-elements": "off",
+        "vuejs-accessibility/no-onchange": "error",
+        "vuejs-accessibility/no-redundant-roles": "error",
+        "vuejs-accessibility/role-has-required-aria-props": "error",
+        "vuejs-accessibility/tabindex-no-positive": "error",
+        // TODO: Make these error in the future
+        "vuejs-accessibility/mouse-events-have-key-events": "warn",
+        "vuejs-accessibility/click-events-have-key-events": "warn",
+        
+        // TODO: Fix these later
+        "vue/multi-word-component-names": "warn",
+        "vue/no-reserved-component-names": "warn",
+
+        "@typescript-eslint/type-annotation-spacing": "error",
+        "@typescript-eslint/no-shadow": "error",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "ignoreRestSiblings": true,
+            "argsIgnorePattern": "key|value|i|doc|next|jpath|event|params|router"
+          }
+        ],
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-redeclare": [
+          "off",
+          {
+            "ignoreDeclarationMerge": true
+          }
+        ],
+        "@typescript-eslint/member-ordering": [
+          "error",
+          { "default": ["field", "constructor", "signature", "method"] }
+        ]
+        
+      }
+    },
+    {
+      "files": "**/*.+(ts)",
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint/eslint-plugin"],
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended", // removes redundant warnings between TS & ESLint
+        "plugin:@typescript-eslint/recommended" // rules specific to typescript, e.g., writing interfaces
+      ],
+      "rules": {
+        "no-shadow": "off",
+        
+        // TODO: Fix these later
+        "vue/multi-word-component-names": "warn",
+        "vue/no-reserved-component-names": "warn",
+        
+        "@typescript-eslint/type-annotation-spacing": "error",
+        "@typescript-eslint/no-shadow": "error",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "ignoreRestSiblings": true,
+            "argsIgnorePattern": "key|value|i|doc|next|jpath|event|params|router"
+          }
+        ],
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-redeclare": [
+          "off",
+          {
+            "ignoreDeclarationMerge": true
+          }
+        ],
+      
+
+        "@typescript-eslint/member-ordering": [
+          "error",
+          { 
+            "default": { 
+              "memberTypes": [], 
+              "order": "alphabetically"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
