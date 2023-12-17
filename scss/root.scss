@@ -1,0 +1,8 @@
+@import './mixins';
+
+:root {
+  --color-text: #fff;
+  --color-background: #000;
+  --font-size-small: #{fontsize-scale(18, 20)};
+  --line-height-body: 1.5;
+}
